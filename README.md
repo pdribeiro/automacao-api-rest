@@ -49,3 +49,11 @@ Para rodar este projeto, você precisa ter as seguintes ferramentas instaladas:
    ```bash
    git clone https://github.com/pdribeiro/automacao-api-rest.git
    cd automacao-api-rest
+
+   mvn install
+
+   mvn test
+
+
+   
+

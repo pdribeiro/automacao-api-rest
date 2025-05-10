@@ -1,41 +1,46 @@
-import io.restassured.RestAssured;
+package testesBase;
 
+import endpoints.BookingEndpoint;
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-public class BookingEndpoint {
-    private final String BASE_URL = "https://restful-booker.herokuapp.com";
+public class TesteBasico {
 
+    BookingEndpoint bookingEndpoint = new BookingEndpoint();
 
-
-
-    public  String lerJson (String caminhoArquivo) throws IOException {
+    public  String lerJson (String caminhoArquivo) throws IOException{
         return  new String(Files.readAllBytes(Paths.get(caminhoArquivo)));
 
     }
 
 
-    public void getAllBookings(){
+    // Define um método de teste
+    @Test
+    public void testGetBooking() {
+        // Configura a URL base para as requisições da API
+        RestAssured.baseURI = "https://restful-booker.herokuapp.com";
 
-        RestAssured.baseURI = BASE_URL;
-
-        given()
-                .header("Accept", "*/*")
-                .when()
-                .get("/booking/")
-                .then()
-                .statusCode(200)
-                .log().all();
+        // Configura e executa a requisição GET para o endpoint "/booking/"
+        given() // Define as configurações da requisição (headers, parâmetros, etc.)
+                .header("Accept", "*/*") //adiciona o header accept
+                .when() // Indica o início da execução da requisição
+                .get("/booking/") // Especifica o endpoint a ser chamado
+                .then() // Define as validações da resposta
+                .statusCode(200) // Verifica se o status code da resposta é 200 (OK)
+                .log().all();    // Loga no console todos os detalhes da resposta (body, headers, etc.)
     }
 
-    public void testWithId(){
+    @Test
 
-        RestAssured.baseURI = BASE_URL;
+    public void testWithId() {
+
+        RestAssured.baseURI = "https://restful-booker.herokuapp.com";
 
         given()
 
@@ -51,15 +56,13 @@ public class BookingEndpoint {
                 .body("bookingdates.checkin", equalTo("2018-01-01"))
                 .body("bookingdates.checkout", equalTo("2019-01-01"))
                 .body("additionalneeds", equalTo("super bowls"));
-
-
     }
 
+    @Test
     public void cadastrarReserva() throws IOException {
+        RestAssured.baseURI = "https://restful-booker.herokuapp.com";
 
         String jsonBody = lerJson("src/test/resources/payloads/reserva.json");
-
-        RestAssured.baseURI = BASE_URL;
 
         given()
                 .header("Content-Type", "application/json")
@@ -75,27 +78,6 @@ public class BookingEndpoint {
                 .body("booking.bookingdates.checkin", equalTo("2018-01-01"))
                 .body("booking.bookingdates.checkout", equalTo("2019-01-01"))
                 .body("booking.additionalneeds", equalTo("Breakfast"));
-
-
-
-    }
-
-    public void alterarReserva(String token) throws IOException {
-
-        String jsonBody = lerJson("src/test/resources/payloads/alterar_reserva.json");
-
-        RestAssured.baseURI = BASE_URL;
-
-        given()
-                .header("Content-Type", "application/json")
-                .header("Cookie", "token=" + token) // usa o token recebido corretamente
-                .body(jsonBody)
-                .when()
-                .put("/booking/1352")
-                .then()
-                .statusCode(200)
-                .log().all();
-
     }
 
 

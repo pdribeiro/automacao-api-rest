@@ -1,3 +1,7 @@
+package testesBase;
+
+import endpoints.BookingEndpoint;
+import endpoints.LoginEndpoint;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -39,4 +43,17 @@ public class TesteBookingPGO {
         bookingEndpoint.alterarReserva(token);
     }
 
+    @Test
+    public void criarEAlterarReserva() throws IOException {
+
+        String token = loginEndpoint.getToken();
+        System.out.println("Token recebido: " + token);
+
+        int bookingId = bookingEndpoint.cadastrarReserva();
+        bookingEndpoint.alterarReserva2(token,bookingId);
+
+
+
+
+    }
 }

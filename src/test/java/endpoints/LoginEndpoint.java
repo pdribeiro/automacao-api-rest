@@ -1,3 +1,5 @@
+package endpoints;
+
 import io.restassured.RestAssured;
 
 import java.io.IOException;

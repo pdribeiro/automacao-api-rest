@@ -69,7 +69,7 @@ public class BookingSteps {
 
     @Then("a resposta deve ter status code 200")
     public void verificarStatusCode200() {
-        assertEquals(200, bookingEndpoint.getStatusCode());
+        assertEquals(200, bookingEndpoint. getStatusCode());
     }
 
 }
